@@ -28,7 +28,7 @@ We will iterate/clarify the instruction set, so feedback welcome.
 ## Get the correct Ubuntu .iso image
 
 One of the compatible operating systems for the Intel OpenVINO toolkit
-is **Ubuntu 16.03.3 LTS (64 bit)**.  This is the guest operating system we
+is **Ubuntu 16.04.3 LTS (64 bit)**.  This is the guest operating system we
 will install on VirtualBox.
 
 Obtain the file ```ubuntu-16.04.3-desktop-amd64.iso``` which is an ISO
@@ -60,7 +60,7 @@ systems can be done, but is a bit more involved).  Also ensure it is
 USB 3.0 to take advantage of fast copy speeds.
 
 We already have a .tar file on a USB stick (the name of the file is
-```l_openvino_toolkit_p_2018.3.343.tar```).  This will be used after
+```l_openvino_toolkit_p_{VERSION}.tar```).  This will be used after
 preparing the Ubuntu environment, which is the next step.
 
 ## Prepare the Ubuntu Environment
@@ -108,19 +108,19 @@ created.
 
 ### Set up user credentials for the machine you have created
 
-- Start the machine that you have created by clicking once on the
+- **Start the machine** that you have created by clicking once on the
 machine name in the VirtualBox manager and then clicking once on the
 green right-arrow.
-- Point to and select the Ubuntu .iso file on your host system and hit
+- Point to and **select the Ubuntu .iso file** on your host system and hit
   the "Start" button.
-- Select "Install Ubuntu".
-- Check the box "Download updates while installing Ubuntu", and click
-the "Continue" button.
-- Check the radial dial "Erase disk and install Ubuntu", and click the
-  "Install Now" button.  (This is only relevant for the guest
-  environment, not your host computer.)  Click "Continue" if you get
+- Select "**Install Ubuntu**".
+- Check the box "**Download updates while installing Ubuntu**", and click
+the "**Continue**" button.
+- Check the radial dial "**Erase disk and install Ubuntu**", and click the
+  "**Install Now**" button.  (This is only relevant for the guest
+  environment, not your host computer.)  Click "**Continue**" if you get
   the pop-up box "Write the changes to disks?".
-- Choose your location (this sets the right timezone) and keyboard
+- **Choose your location** (this sets the right timezone) and keyboard
 layout.
 - When prompted for your name, for this instruction set we have used
   the name "user01".  You may like to use your own name instead.
@@ -130,8 +130,8 @@ layout.
   "user01-VirtualBox" to simply "VirtualBox", as this simplifies the
   subsequent command prompt inside the environment.
 - The subsequent install takes a few minutes.
-- When the installation is complete, you will need to restart the
-environment when prompted to do so (and press enter when prompted).
+- When the installation is complete, you will need to **restart the
+environment when prompted to do so** (and press enter when prompted).
 On restart you will see it prompt "user01" for the password.
 - If you open up a terminal (right-click and select "Open Terminal"
   you should see a terminal with the command prompt
@@ -147,12 +147,12 @@ host computer.  It should be recognised by the guest system.
   may not influence whether the subsequent copy of the file completes
   properly.  Basic copying from a USB stick in Ubuntu is buggy, so it
   is worth checking that the file copies across OK.
-- Copy the ```l_openvino_toolkit_p_2018.3.343.tar``` file from the USB
+- Copy the ```l_openvino_toolkit_p_{VERSION}.tar``` file from the USB
   to the Downloads directory.  You can do this using the windows GUIs,
   or at the command prompt by
   ```
   cd /Downloads
-  cp /media/ubuntu/{MEM_STICK_NAME}/l_openvino_toolkit_p_2018.3.343.tar .
+  cp /media/ubuntu/{MEM_STICK_NAME}/l_openvino_toolkit_p_{VERSION}.tar .
   ```
 - If all has gone well, the 1.3 GB file copies across entirely.
 - (Also copy across the .sh files - to expand on).
@@ -166,10 +166,10 @@ USB icon).
 - Go the the Downloads directory by doing ```cd Downloads/```.  Extract from the
 .tar file by
 ```
-tar -xf l_openvino_toolkit_p_2018.3.343.tar
+tar -xf l_openvino_toolkit_p_{VERSION}.tar
 ```
 - The above step is virtually instantaneous, and creates a directory
-called ```l_openvino_toolkit_p_2018.3.343``` in the same ```/Downloads```
+called ```l_openvino_toolkit_p_{VERSION}``` in the same ```/Downloads```
 directory.
 
 ## Log in as the root user
@@ -181,27 +181,30 @@ need to be, as you are already the root user.
 - If you are the root user, the prompt will be ```root@VirtualBox:~#```.
   Note how the terminal prompt ends in "#" rather than "$".
 
-## Some other handy installs
+## Some other handy installs and settings
 
 - This is a good moment to install any other requirements.
 - Ensure your other favourite editor is available (e.g. nano).  If you
 want another editor like ```emacs```, then you will need to install it with
 ```sudo apt install emacs```.
 - ```sudo apt install tree``` (it's a nice utility that displays the
-  subdirectory tree neatly if you type "tree" at the command prompt.
-- ```sudo apt install python-pip``` (check)
-- ```sudo pip install --upgrade pip``` (check)
+subdirectory tree neatly if you type "tree" at the command prompt.
+- ```sudo apt install git```
 
-This is a good moment to test that the webcam is working.  Plug it in,
-run cheese by typing ```cheese``` at the command prompt.
+This is a good moment to test that the webcam is working.  See the
+loose ends section for a few ways to check it.
 
 You might also want to define any other preferred options,
 e.g. ```alias ls='ls -lah --color=auto'```
 
+You might also wish to change the screen lock settings, for example go
+to System Settings, Brightness & Lock, and alter the "Turn screen off
+when inactive" parameter to something longer than the default 5 minutes.
+
 ## Installing OpenVINO
 
 ```
-cd Downloads/l_openvino_toolkit_p_2018.3.343/
+cd Downloads/l_openvino_toolkit_p_{VERSION}/
 ./install_cv_sdk_dependencies.sh
 ```
 Then run the GUI installation (root access is required).  The only
@@ -248,6 +251,42 @@ Finally, to run the face recognition example:
 ```
 cd $ISAMPLES
 $RUNFACE1
+```
+
+## Loose ends
+
+### Checking cameras
+
+To see if any of the cameras are working when they are plugged in, you
+can check by:
+
+```
+ls /dev/video*
+```
+and if there are any active cameras, you will see a path
+```/dev/video0```, ```/dev/video1```, etc.
+
+or run cheese by typing ```cheese``` at the command prompt.
+
+### Checking USB devices
+
+You can type ```lsusb``` at the command prompt to see USB devices.
+
+You can also install ```usbview``` by:
+```
+sudo apt install usbview
+```
+and then running it from the command prompt by typing
+```sudo usbview &``` (the ampersand runs the process in the background).
+
+### Useful modifications to .bashrc
+
+You can add the following lines to your ```.bashrc``` file (in your
+home directory) by editing with ```nano .bashrc``` and adding:
+```
+alias ls='ls -lah --color=auto'
+source /opt/intel/computer_vision_sdk/bin/setupvars.sh
+source /home/user01/Downloads/commands.sh
 ```
 
 ## OpenVINO resources
