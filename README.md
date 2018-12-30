@@ -172,6 +172,7 @@ tar -xf l_openvino_toolkit_p_{VERSION}.tar
 called ```l_openvino_toolkit_p_{VERSION}``` in the same ```/Downloads```
 directory.
 
+<!--
 ## Log in as the root user
 
 - Log in as the root user: ```sudo -i``` This means all of the
@@ -180,6 +181,7 @@ installs that would otherwise need to be preceeded by "sudo" do not
 need to be, as you are already the root user.
 - If you are the root user, the prompt will be ```root@VirtualBox:~#```.
   Note how the terminal prompt ends in "#" rather than "$".
+-->
 
 ## Some other handy installs and settings
 
@@ -205,7 +207,7 @@ when inactive" parameter to something longer than the default 5 minutes.
 
 ```
 cd Downloads/l_openvino_toolkit_p_{VERSION}/
-./install_cv_sdk_dependencies.sh
+sudo ./install_cv_sdk_dependencies.sh
 ```
 Then run the GUI installation (root access is required).  The only
 outstanding issue is that the OpenCL driver is missing - this is
@@ -228,6 +230,20 @@ sudo -E ./install_NEO_OCL_driver.sh
 We are now on the instruction track that is in the HTML that popped
 up.
 
+## Useful modifications to .bashrc
+
+You can add the following lines to your ```.bashrc``` file (in your
+home directory) by editing with ```nano .bashrc``` and adding:
+```
+alias ls='ls -lah --color=auto'
+source /opt/intel/computer_vision_sdk/bin/setupvars.sh
+source /home/user01/Downloads/commands.sh
+```
+
+Every fresh terminal window will automatically run the ```.bashrc```.
+If you need to run the ```.bashrc``` in your existing terminal just
+after you have modified it, then do ```source .bashrc```.
+
 ## Compiling examples
 
 You can follow the instructions in the HTML pop-up window.  To make
@@ -241,17 +257,34 @@ cd /home/user01/Downloads/
 ./intel_examples.sh
 ```
 
-There are some pre-defined commands in the ```commands.sh``` file.
-To activate those, do
-```
-source /home/user01/Downloads/commands.sh
-```
+There are some pre-defined commands in the ```commands.sh``` file.  We
+assume that the modifications to ```.bashrc``` as discussed above have
+been made.
 
 Finally, to run the face recognition example:
 ```
 cd $ISAMPLES
 $RUNFACE1
 ```
+
+## Configuring the Neural Compute Stick (NCS)
+
+```
+cd /home/user01/Downloads/
+./movidius_setup.sh
+```
+
+## Face recognition example on the Neural Compute Stick (NCS)
+
+```
+cd $ISAMPLES
+$RUNFACE1 -d MYRIAD
+```
+
+There may be a "device not found" error when you try to do this.  If
+this occurs, look at the USB list for the devices.  You should see a
+"Loopback Device".  Add this to your USB list in the VirtualBox and
+start again.
 
 ## Loose ends
 
@@ -279,20 +312,11 @@ sudo apt install usbview
 and then running it from the command prompt by typing
 ```sudo usbview &``` (the ampersand runs the process in the background).
 
-### Useful modifications to .bashrc
-
-You can add the following lines to your ```.bashrc``` file (in your
-home directory) by editing with ```nano .bashrc``` and adding:
-```
-alias ls='ls -lah --color=auto'
-source /opt/intel/computer_vision_sdk/bin/setupvars.sh
-source /home/user01/Downloads/commands.sh
-```
-
-## OpenVINO resources
+## Intel Resources
 
 [Installing the OpenVINO Toolkit for Linux](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux)
 
+[Intel Neural Compute Stick](https://software.intel.com/en-us/neural-compute-stick)
 
 
 
